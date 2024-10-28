@@ -1,5 +1,6 @@
 package basics;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ASCIIDecoder {
 
@@ -19,8 +20,21 @@ public class ASCIIDecoder {
      *
      * You should NEVER return null or an array containing null.
      */
-    public static String [] decode(int[] forbidden, String[][] sentences){
-         return null;
+    public static String[] decode(int[] forbidden, String[][] sentences){
+        String[] result = new String[sentences.length];
+        int index = 0;
+        for (String[] sentence: sentences) {
+            StringBuilder string_builder = new StringBuilder();
+            for (String ascii_code: sentence) {
+                int ascii = Integer.parseInt(ascii_code);
+                if (forbidden != null && Arrays.stream(forbidden).anyMatch(i -> i == ascii)) {
+                    continue;
+                }
+                string_builder.appendCodePoint(ascii);
+            }
+            result[index++] = string_builder.toString();
+        }
+        return result;
     }
 
 }

@@ -14,7 +14,20 @@ public class Matrix {
      *  @return The matrix represented by the String
      */
     public static int[][] buildFrom(String s) {
-         return null;
+        String[] rows = s.split("\n");
+        int[][] result = new int[rows.length][];
+        int row_index = 0;
+        for (String row: rows) {
+             String[] elements = row.split(" ");
+             result[row_index] = new int[elements.length];
+             int element_index = 0;
+             for (String element: elements) {
+                 result[row_index][element_index] = Integer.parseInt(element);
+                 element_index++;
+             }
+             row_index++;
+         }
+         return result;
     }
 
 
@@ -25,7 +38,13 @@ public class Matrix {
      * @return The sum of the element in matrix
      */
     public static int sum(int[][] matrix) {
-         return 0;
+        int result = 0;
+        for (int i = matrix.length-1; i>=0; i--) {
+            for (int element: matrix[i]) {
+                 result+=element;
+            }
+        }
+        return result;
     }
 
     /**
@@ -35,7 +54,15 @@ public class Matrix {
      * @return A new matrix that is the transpose of matrix
      */
     public static int[][] transpose(int[][] matrix) {
-         return null;
+         int number_of_rows = matrix.length;
+         int lenght_of_rows = matrix[0].length;
+         int[][] result = new int[lenght_of_rows][number_of_rows];
+         for (int i = 0; i<lenght_of_rows; i++) {
+             for (int j = 0; j<number_of_rows; j++) {
+                 result[i][j] = matrix[j][i];
+             }
+         }
+         return result;
     }
 
     /**
@@ -46,6 +73,15 @@ public class Matrix {
      * @return The n x k matrix product of matrix1 and matrix2
      */
     public static int[][] product(int[][] matrix1, int[][] matrix2) {
-         return null;
+         int[][] result = new int[matrix1.length][matrix2[0].length];
+
+         for (int i = 0; i<matrix1.length; i++) {
+             for (int j = 0; j<matrix2[0].length; j++) {
+                 for (int k = 0; k<matrix1[0].length; k++) {
+                     result[i][j] += matrix1[i][k] * matrix2[k][j];
+                 }
+             }
+         }
+         return result;
     }
 }

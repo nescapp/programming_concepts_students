@@ -1,9 +1,12 @@
 package basics;
 
+import javax.swing.text.Style;
+import java.util.Arrays;
+
 public class StringUtils {
 
 
-    /**
+    /**;
      * Split a string according to a delimiter
      *
      * @param str The string to split
@@ -14,7 +17,18 @@ public class StringUtils {
      *          return an array of size 1 with the string at element 0
      */
     public static String [] split(String str, char delimiter){
-         return null;
+        String[] result = new String[0];
+        int start = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == delimiter) {
+                result = Arrays.copyOf(result, result.length + 1);
+                result[result.length - 1] = str.substring(start, i);
+                start = i + 1;
+            }
+        }
+        result = Arrays.copyOf(result, result.length + 1);
+        result[result.length - 1] = str.substring(start);
+        return result;
     }
 
 
@@ -28,7 +42,10 @@ public class StringUtils {
      *          in str
      */
     public static int indexOf(String str, String sub){
-         return 0;
+        if (str.contains(sub)) {
+            return str.indexOf(sub);
+        }
+         return -1;
     }
 
 
@@ -40,7 +57,12 @@ public class StringUtils {
      *          character put to lower case.
      */
     public static String toLowerCase(String str){
-         return null;
+         for (char c: str.toCharArray()){
+            if (Character.isUpperCase(c)){
+                str = str.replace(c, Character.toLowerCase(c));
+            }
+         }
+         return str;
     }
 
 
@@ -55,7 +77,14 @@ public class StringUtils {
      * @return true if str is a palyndrome, false otherwise
      */
     public static boolean palindrome(String str){
-         return false;
+        int end = str.length()-1;
+        for (int start=0;start!=end;start++) {
+            if (str.charAt(start)!=str.charAt(end-start)) {
+                return false;
+            }
+        }
+
+         return true;
     }
 
 

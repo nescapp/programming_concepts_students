@@ -63,8 +63,13 @@ public class JavelinThrowTest {
         //   xx.....
         //   ..xx...
         //   ....xxx
+        // -x-field/2+
+        // field
 
         JavelinThrow.JavelinPosition jp = JavelinThrow.findJavelin(field);
+        System.out.println(jp.x);
+        System.out.println(jp.y);
+
         assertTrue(jp.x==5 && jp.y==2);
     }
 

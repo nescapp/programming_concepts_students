@@ -91,7 +91,13 @@ public class JavelinThrow {
      * @return the position of the javelin in the field
      */
     public static JavelinPosition findJavelin(char[][] field) {
-         // TODO
+         for (int y = 0; y < field.length; y++) {
+             for (int x = 0; x < field[y].length; x++) {
+                 if (field[y][x] == '#') {
+                     return new JavelinPosition(x, y);
+                 }
+             }
+         }
          return new JavelinPosition(-1,-1);
 
     }
@@ -112,11 +118,18 @@ public class JavelinThrow {
      * @return true if throw is valid, false if the throw is invalid.
      */
     public static boolean isThrowValid(char[][] field) {
-        int fieldWidth = field[0].length;
-        int fieldHeight = field.length;
+        JavelinPosition javelin = findJavelin(field);
 
-         // TODO
-         return false;
+            for (int x = javelin.x; x < field[0].length; x++) {
+                if (field[javelin.y][x] == 'x') {
+                    return false;
+                }
+            }
 
+        if (field[(javelin.y - field.length / 2)*(-1) + field.length / 2][javelin.x] == 'x') {
+            return false;
+        }
+
+        return true;
     }
 }

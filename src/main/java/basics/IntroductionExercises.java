@@ -7,40 +7,55 @@ public class IntroductionExercises {
     public static int[] squares;
 
     /*
-     * Function that bound variable to value
+     * Function that bounds a variable to a value
      */
     public static void attribute(int value){
+        variable = value;
     }
 
     /*
-     * Function that return the addition of the two parameters
+     * Function that returns the addition of the two parameters
      */
     public static int add(int a, int b){
-         return 0;
+         return a+b;
     }
 
     /*
-     * return true is a and b are equal
+     * returns true is a and b are equal
      */
     public static boolean equalsIntegers(int a, int b){
-         return false;
+         return a==b;
     }
 
     /*
-     * Function that return the max between a and b in one line
+     * Function that returns the max between a and b in one line
      * You must use a ternary operation
      */
     public static int max(int a, int b){
-         return 0;
+         return Math.max(a, b);
     }
 
     /*
-     * Function that return the middle value.
+     * Function that returns the middle value.
      * If a > b > c, the function must return b.
-     * If two value are equals, return -1.
+     * If two values are equal, return -1.
      */
     public static int middleValue(int a, int b, int c){
-         return 0;
+        if (a > b && b > c) {
+            return b;
+        } else if (b > a && a > c) {
+            return a;
+        } else if (a > c && c > b) {
+            return c;
+        } else if (c > b && b > a) {
+            return b;
+        } else if (b > c && c > a) {
+            return c;
+        } else if (c > a && a > b) {
+            return a;
+        } else {
+            return -1;
+        }
     }
     /*
      * This function must return :
@@ -52,7 +67,14 @@ public class IntroductionExercises {
      * And you should not use if/else!
      */
     public static String greetings(String str){
-         return "";
+        switch (str) {
+            case "Morning":
+                return "Good morning, sir!";
+            case "Evening":
+                return "Good evening, sir!";
+            default:
+                return "Hello, sir!";
+        }
     }
 
     /*
@@ -62,29 +84,45 @@ public class IntroductionExercises {
      * The last element is the middle element of a
      */
     public static int[] lastFirstMiddle(int[] a){
-         return null;
+        int[] newArray = new int[3];
+        newArray[0] = a[a.length - 1];
+        newArray[1] = a[0];
+        newArray[2] = a[a.length / 2];
+        return newArray;
     }
 
     /*
      * This function must return the sum of the elements of array using a for loop
      */
     public static int sum(int[] array){
-         return 0;
+        int sum = 0;
+        for (int s: array) {
+            sum += s;
+        }
+        return sum;
     }
 
     /*
      * return the maximum element of array using a while loop
      */
     public static int maxArray(int[] array){
-         return 0;
+        int max = array[0];
+        int i = 0;
+        while (i < array.length) {
+            if (max < array[i]) {
+                max = array[i];
+            }
+            i++;
+        }
+        return max;
     }
 
 
     /**
-     * Assign to the variable square, the square of the
+     * Assign to the variable "squares", the square of the
      * parameters.
      *
-     * Let assume that the program is invoked with the following
+     * Let's assume that the program is invoked with the following
      * line:
      *  java IntroductionExercises 0 3 4 5
      *
@@ -105,6 +143,21 @@ public class IntroductionExercises {
      * because 3.1 can not be converted to an integer
      * */
     public static void main(String... args){
+        squares = new int[args.length];
+        int index = 0;
+        for (String arg : args) {
+            try {
+                int i = Integer.parseInt(arg);
+                squares[index] = i * i;
+            } catch (NumberFormatException e) {
+                squares[index] = 0;
+            }
+            index++;
+        }
+
+        for (int i : squares) {
+            System.out.println(i);
+        }
     }
 
 }

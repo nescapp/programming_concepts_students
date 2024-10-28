@@ -16,9 +16,22 @@ public class PatternMatching {
      * the string. Must be <code>-1</code> if the pattern is absent
      * from the string.
      **/
-    public static int find(String pattern,
-                           String value) {
-         return -1;
+    public static int find(String pattern, String value) {
+        char[] patternChars = pattern.toCharArray();
+        char[] valueChars = value.toCharArray();
+        for (int index_in_value=0; index_in_value <= value.length() - pattern.length(); index_in_value++) {
+            boolean found = true;
+            for (int index_in_pattern=0; index_in_pattern < pattern.length(); index_in_pattern++){
+                if (valueChars[index_in_value+index_in_pattern] != patternChars[index_in_pattern]){
+                    found = false;
+                    break;
+                }
+            }
+            if (found) {
+                return index_in_value;
+            }
+        }
+        return -1;
     }
 
 }
