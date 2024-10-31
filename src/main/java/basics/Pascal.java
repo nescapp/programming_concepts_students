@@ -1,14 +1,10 @@
 package basics;
 
-import java.util.Arrays;
-
-
 /**
  * ***********
  * * English *
  * ***********
  *  The Pascal triangle up to row5 looks like this:
- *
  *  row1      1
  *  row2     1 1
  *  row3    1 2 1

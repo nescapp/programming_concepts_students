@@ -160,8 +160,69 @@ public class Pentago {
      * @return Winner   the winning status of the game after the play (cf. above)
      */
     public Winner play(int i, int j, Player player, BoardSubpart subpart, RotationDirection direction) {
-        // TODO
-         return null; // add your own code here
+        if (i < 0 || i >= BOARD_SIZE || j < 0 || j >= BOARD_SIZE) {
+            throw new IllegalArgumentException("Invalid index");
+        }
+
+        if (isGridFilled()) {
+            return Winner.NO_WINNER;
+        }
+
+        int subpartTopX = 0;
+        int subpartTopY = 0;
+
+        if (subpart == BoardSubpart.TOP_RIGHT || subpart == BoardSubpart.BOTTOM_RIGHT) {
+            subpartTopX = SUBPART_SIZE;
+        }
+
+        if (subpart == BoardSubpart.BOTTOM_LEFT || subpart == BoardSubpart.BOTTOM_RIGHT) {
+            subpartTopY = SUBPART_SIZE;
+        }
+        if (this.board[i][j] != null) {
+            throw new IllegalArgumentException("position is not empty");
+        }
+        this.board[i][j] = player;
+
+        // rotating the thing
+        if (direction == RotationDirection.RIGHT) {
+            Player[][] rotatedSubpart = new Player[SUBPART_SIZE][SUBPART_SIZE];
+            for (int y = subpartTopY; y < subpartTopY+SUBPART_SIZE; y++) {
+                for (int x = subpartTopX; x < subpartTopX+SUBPART_SIZE; x++) {
+                    rotatedSubpart[y-subpartTopY][x-subpartTopX] = this.board[y][x];
+                }
+            }
+            rotatedSubpart = rotateMatrix(rotatedSubpart);
+            for (int y = subpartTopY; y < subpartTopY+SUBPART_SIZE; y++) {
+                for (int x = subpartTopX; x < subpartTopX+SUBPART_SIZE; x++) {
+                    this.board[y][x] = rotatedSubpart[y-subpartTopY][x-subpartTopX];
+                }
+            }
+        } else if (direction == RotationDirection.LEFT) {
+            Player[][] rotatedSubpart = new Player[SUBPART_SIZE][SUBPART_SIZE];
+            for (int y = subpartTopY; y < subpartTopY+SUBPART_SIZE; y++) {
+                for (int x = subpartTopX; x < subpartTopX+SUBPART_SIZE; x++) {
+                    rotatedSubpart[y-subpartTopY][x-subpartTopX] = this.board[y][x];
+                }
+            }
+            rotatedSubpart = rotateMatrix(rotatedSubpart);
+            rotatedSubpart = rotateMatrix(rotatedSubpart);
+            rotatedSubpart = rotateMatrix(rotatedSubpart); // this is terrible
+            for (int y = subpartTopY; y < subpartTopY+SUBPART_SIZE; y++) {
+                for (int x = subpartTopX; x < subpartTopX+SUBPART_SIZE; x++) {
+                    this.board[y][x] = rotatedSubpart[y-subpartTopY][x-subpartTopX];
+                }
+            }
+        }
+
+        // checking for winners
+        if (checkWinPlayer(Player.A)) {
+            return Winner.A_WINS;
+        } else if (checkWinPlayer(Player.B)) {
+            return Winner.B_WINS;
+        } else {
+            return Winner.NO_WINNER;
+        }
+
     }
 
 
@@ -178,8 +239,13 @@ public class Pentago {
      *         The input matrix is left unchanged.
      */
     public Player[][] rotateMatrix(Player[][] matrix) {
-        // TODO
-         return null;
+        Player[][] result = new Player[matrix[0].length][matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                result[j][matrix[0].length-i-1] = matrix[i][j];
+            }
+        }
+        return result;
     }
 
     /**
@@ -191,8 +257,18 @@ public class Pentago {
      * @return true if and only if the given player has five consecutive positions in the array.
      */
     public boolean checkWinPlayer(Player[] vector, Player player){
-        // TODO
-         return false;
+        int counter = 0;
+        for (int i = 0; i < vector.length; i++) {
+            if (vector[i] == player) {
+                if (counter >= 4) {
+                    return true;
+                }
+                counter++;
+            } else {
+                counter = 0;
+            }
+        }
+        return false;
     }
 
     /**
@@ -201,7 +277,34 @@ public class Pentago {
      * @return true if the given player has won and false otherwise.
      */
     private boolean checkWinPlayer(Player player) {
-        // TODO
-         return false;
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            // horizontal
+            if (checkWinPlayer(this.board[i], player)) {
+                return true;
+            }
+
+            // vertical
+            Player[] columnVector = new Player[BOARD_SIZE];
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                columnVector[j] = this.board[j][i];
+            }
+            if (checkWinPlayer(columnVector, player)) {
+                return true;
+            }
+
+            // diagonals
+            if (i < BOARD_SIZE - 4) {
+                Player[] diagonalVector1 = new Player[BOARD_SIZE - i];
+                Player[] diagonalVector2 = new Player[BOARD_SIZE - i];
+                for (int j = 0; j < BOARD_SIZE - i; j++) {
+                    diagonalVector1[j] = this.board[j][j + i];
+                    diagonalVector2[j] = this.board[j + i][j];
+                }
+                if (checkWinPlayer(diagonalVector1, player) || checkWinPlayer(diagonalVector2, player)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
